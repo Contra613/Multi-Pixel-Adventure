@@ -24,6 +24,11 @@ public class Controller : MonoBehaviour
         Init();
     }
 
+    void Update()
+    {
+        UpdateController();
+    }
+
     protected virtual void Init()
     {
         _sprite = GetComponent<SpriteRenderer>();
@@ -31,4 +36,6 @@ public class Controller : MonoBehaviour
         _rigid = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
     }
+
+    protected virtual void UpdateController() { }
 }

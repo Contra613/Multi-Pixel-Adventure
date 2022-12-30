@@ -28,7 +28,7 @@ public class MultiplayersBulidAndRun
         EditorUserBuildSettings.SwitchActiveBuildTarget(
             BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows);
 
-        for(int i=0; i <= playerCount; i++)
+        for(int i=0; i < playerCount; i++)
         {
             BuildPipeline.BuildPlayer(GetScenePaths(),
                 "Build/Win64/" + GetProjectName() + i.ToString() + "/" + GetProjectName() + i.ToString() + ".exe",

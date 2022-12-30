@@ -17,13 +17,13 @@ public class PlayerController : Controller
         base.Init();
     }
 
-    private void Update()
+    protected override void UpdateController()
     {
-        if(Input.GetKey(KeyCode.Escape))
+        if (Input.GetKey(KeyCode.Escape))
             _state = PlayerState.Die;
-        
 
-        switch(_state)
+
+        switch (_state)
         {
             case PlayerState.Idle:
                 Idle();
@@ -36,11 +36,6 @@ public class PlayerController : Controller
                 break;
         }
     }
-
-    /*void LateUpdate()
-    {
-        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y + 2, _cameraFocus);
-    }*/
 
     void Idle()
     {
