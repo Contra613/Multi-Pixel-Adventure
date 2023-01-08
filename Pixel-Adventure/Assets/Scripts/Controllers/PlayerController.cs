@@ -8,21 +8,17 @@ public class PlayerController : Controller
     [SerializeField]
     protected int _cameraFocus = -10;
 
-    protected float _hp = 10;
-
-    PlayerState _state = PlayerState.Idle;
+    protected PlayerState _state = PlayerState.Idle;
 
     protected override void Init()
     {
         base.Init();
+
+        UpdateAnimation();
     }
 
     protected override void UpdateController()
     {
-        if (Input.GetKey(KeyCode.Escape))
-            _state = PlayerState.Die;
-
-
         switch (_state)
         {
             case PlayerState.Idle:
@@ -37,61 +33,45 @@ public class PlayerController : Controller
         }
     }
 
-    void Idle()
+    protected override void UpdateAnimation()
     {
-        if (Input.anyKey == true)
+        switch (_state)
         {
-            _state = PlayerState.Moving;
-        }
-        else if(_isJumping == false)
-        {
-            _animator.Play("IDLE");
+            case PlayerState.Idle:
+                if(_isJumping == false) 
+                    _animator.Play("IDLE");
+
+                if (_isJumping == true && _rigid.velocity.y <= 0)
+                    _animator.Play("FALL");
+                break;
+            case PlayerState.Moving:
+                if (_isJumping == false)
+                    _animator.Play("RUN");
+                
+                if(_rigid.velocity.y > 0)
+                    _animator.Play("JUMP");
+                else if(_isJumping == true && _rigid.velocity.y <= 0)
+                    _animator.Play("FALL");
+                break;
+            case PlayerState.Die:
+                _animator.Play("DIE");
+                break;
         }
     }
 
-    void Move()
+    protected virtual void Idle()
     {
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            transform.position += Vector3.right * Time.deltaTime * _moveSpeed;
-            _sprite.flipX = false;
-
-            if(_isJumping == false)
-                _animator.Play("RUN");
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            transform.position += Vector3.left * Time.deltaTime * _moveSpeed;
-            _sprite.flipX = true;
-
-            if (_isJumping == false)
-                _animator.Play("RUN");
-        }
-        
-        if (Input.GetKey(KeyCode.Z) && _jumpCount < 1)
-        {
-            _isJumping = true;
-
-            _jumpCount++;
-            _rigid.velocity = Vector2.zero;
-            _rigid.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-
-            if (_rigid.velocity.y > 0)
-                _animator.Play("JUMP");
-        }
-        else if (_isJumping == true && _rigid.velocity.y < 0)
-            _animator.Play("FALL");
-
-
-        _state = PlayerState.Idle;
+       
     }
 
-    void Die()
+    protected virtual void Move()
+    {
+       
+    }
+
+    protected virtual void Die()
     {   
-        _animator.Play("DIE");
         
-        GameObject player = GameObject.Find("Player");
-        GameObject.Destroy(player, 1f);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

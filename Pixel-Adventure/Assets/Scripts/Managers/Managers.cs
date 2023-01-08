@@ -9,8 +9,10 @@ public class Managers : MonoBehaviour
 
     #region Contents
     NetworkManager _network = new NetworkManager();
+    ObjectManager _object = new ObjectManager();
 
     public static NetworkManager Network { get { return Instance._network; } }
+    public static ObjectManager Object { get { return Instance._object; } }
 	#endregion
 
 	#region Core

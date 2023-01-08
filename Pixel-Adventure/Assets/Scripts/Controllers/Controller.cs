@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 public class Controller : MonoBehaviour
 {
+    public int ID { get; set; }
+
     [SerializeField]
     protected float _moveSpeed = 15.0f;
     [SerializeField]
@@ -27,6 +30,7 @@ public class Controller : MonoBehaviour
     void Update()
     {
         UpdateController();
+        UpdateAnimation();
     }
 
     protected virtual void Init()
@@ -37,5 +41,14 @@ public class Controller : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    protected virtual void UpdateController() { }
+    protected virtual void UpdateController() 
+    {
+        
+    }
+
+    protected virtual void UpdateAnimation()
+    {
+
+
+    }
 }

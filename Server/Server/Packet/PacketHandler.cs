@@ -8,7 +8,7 @@ using System.Text;
 
 class PacketHandler
 {
-	public static void C_MoveHanlder(PacketSession session, IMessage packet)
+	public static void C_MoveHandler(PacketSession session, IMessage packet)
 	{
 		C_Move chatPacket = packet as C_Move;
 		ClientSession serverSession = session as ClientSession;

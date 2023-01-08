@@ -24,7 +24,6 @@ public class GameScene : BaseScene
         //SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
         //pool.SetKeepMonsterCount(2);
 
-        Managers.Resource.Instantiate("Players/Player_1");
     }
 
     public override void Clear()
