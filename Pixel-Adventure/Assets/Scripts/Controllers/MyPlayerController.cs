@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,28 +27,24 @@ public class MyPlayerController : PlayerController
 
     protected override void Idle()
     {
-        base.Idle();
-
         if (Input.anyKey == true)
         {
-            _state = PlayerState.Moving;
+            State = PlayerState.Moving;
         }
     }
 
-    protected override void Move()
+    private void GetInput()
     {
-        base.Move();
-
-
         if (Input.GetKey(KeyCode.RightArrow))
         {
             transform.position += Vector3.right * Time.deltaTime * _moveSpeed;
-            _sprite.flipX = false;
+            Dir = MoveDir.Right;
         }
+        
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             transform.position += Vector3.left * Time.deltaTime * _moveSpeed;
-            _sprite.flipX = true;
+            Dir = MoveDir.Left;
         }
 
         if (Input.GetKey(KeyCode.Z) && _jumpCount < 1)
@@ -59,15 +56,61 @@ public class MyPlayerController : PlayerController
             _rigid.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         }
 
-        _state = PlayerState.Idle;
     }
+
+    protected override void Moveing()
+    {
+        /*PlayerState prevState = State;
+        Vector3 prevCellPos = CellPos;*/
+
+        GetInput();
+
+        CellPos = new Vector3(transform.position.x, transform.position.y, 0);
+
+        /*if(State != PlayerState.Moving)
+            _state = PlayerState.Idle;*/
+
+        /*if (prevState != State || CellPos != prevCellPos)
+        {
+            C_Move movePacket = new C_Move();
+            movePacket.PosInfo = PosInfo;
+            Managers.Network.Send(movePacket);
+        }*/
+
+        CheckUpdatedFlag();
+    }
+
+    protected override void Jumping()
+    {
+        GetInput();
+
+        if (_rigid.velocity.y <= 0)
+            State = PlayerState.Falling;
+    }
+
+    protected override void Falling()
+    {
+        GetInput();
+
+        if (_isGrounded == true && _isJumping == false)
+            State = PlayerState.Idle;
+    }
+
 
     protected override void Die()
     {
-        base.Die();
-
         GameObject player = GameObject.Find("MyPlayer");
         GameObject.Destroy(player, 1f);
     }
 
+    void CheckUpdatedFlag()
+    {
+        if (_updated)
+        {
+            C_Move movePacket = new C_Move();
+            movePacket.PosInfo = PosInfo;
+            Managers.Network.Send(movePacket);
+            _updated = false;
+        }
+    }
 }
