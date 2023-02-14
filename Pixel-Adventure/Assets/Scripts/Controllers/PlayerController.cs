@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,65 +14,25 @@ public class PlayerController : Controller
     protected override void Init()
     {
         base.Init();
-
-        UpdateAnimation();
     }
 
     protected override void UpdateController()
     {
-        switch (_state)
-        {
-            case PlayerState.Idle:
-                Idle();
-                break;
-            case PlayerState.Moving:
-                Move();
-                break;
-            case PlayerState.Die:
-                Die();
-                break;
-        }
+        base.UpdateController();
     }
 
     protected override void UpdateAnimation()
     {
-        switch (_state)
+        base.UpdateAnimation();
+    }
+
+    protected override void Idle()
+    {
+        if (Dir != MoveDir.None)
         {
-            case PlayerState.Idle:
-                if(_isJumping == false) 
-                    _animator.Play("IDLE");
-
-                if (_isJumping == true && _rigid.velocity.y <= 0)
-                    _animator.Play("FALL");
-                break;
-            case PlayerState.Moving:
-                if (_isJumping == false)
-                    _animator.Play("RUN");
-                
-                if(_rigid.velocity.y > 0)
-                    _animator.Play("JUMP");
-                else if(_isJumping == true && _rigid.velocity.y <= 0)
-                    _animator.Play("FALL");
-                break;
-            case PlayerState.Die:
-                _animator.Play("DIE");
-                break;
+            State = PlayerState.Moving;
+            return;
         }
-    }
-
-    protected virtual void Idle()
-    {
-       
-    }
-
-    protected virtual void Move()
-    {
-       
-    }
-
-    protected virtual void Die()
-    {   
-        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

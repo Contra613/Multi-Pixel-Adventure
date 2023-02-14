@@ -19,6 +19,7 @@ public class ObjectManager
 
 			MyPlayer = go.GetComponent<MyPlayerController>();
 			MyPlayer.ID = info.PlayerId;
+			MyPlayer.PosInfo = info.PosInfo;
 		}
 		else
 		{
@@ -28,6 +29,7 @@ public class ObjectManager
 
 			PlayerController pc = go.GetComponent<PlayerController>();
 			pc.ID = info.PlayerId;
+			pc.PosInfo = info.PosInfo;
 		}
 	}
 
