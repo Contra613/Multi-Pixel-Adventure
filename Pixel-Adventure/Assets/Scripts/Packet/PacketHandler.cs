@@ -11,11 +11,15 @@ class PacketHandler
 	{
 		S_EnterGame enterGamePacket = packet as S_EnterGame;
 		Managers.Object.Add(enterGamePacket.Player, myPlayer: true);
+
+		Debug.Log("S_EnterGameHandler");
 	}
 	public static void S_LeaveGameHandler(PacketSession session, IMessage packet)
 	{
 		S_LeaveGame leaveGamePacket = packet as S_LeaveGame;
 		Managers.Object.RemoveMyPlayer();
+
+		Debug.Log("S_LeaveGameHandler");
 	}
 
 	public static void S_SpawnHandler(PacketSession session, IMessage packet)
@@ -24,6 +28,8 @@ class PacketHandler
 
 		foreach (PlayerInfo players in spawnPacket.Players)
 			Managers.Object.Add(players, myPlayer: false);
+
+		Debug.Log("S_SpawnHandler");
 	}
 	public static void S_DespawnHandler(PacketSession session, IMessage packet)
 	{
@@ -31,6 +37,8 @@ class PacketHandler
 
 		foreach (int id in despawnPacket.PlayerId)
 			Managers.Object.Remove(id);
+
+		Debug.Log("S_DespawnHandler");
 	}
 	public static void S_MoveHandler(PacketSession session, IMessage packet)
 	{
