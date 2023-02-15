@@ -23,6 +23,7 @@ namespace Server.Game
                 _players.Add(newPlayer);
                 newPlayer.Room = this;
 
+                // Send MyPlayer
                 {
                     S_EnterGame enterPacke = new S_EnterGame();
                     enterPacke.Player = newPlayer.Info;
@@ -38,6 +39,7 @@ namespace Server.Game
                     newPlayer.Session.Send(spawnPacket);
                 }
 
+                // Send Other Players
                 {
                     S_Spawn spawnPacket = new S_Spawn();
                     spawnPacket.Players.Add(newPlayer.Info);
@@ -64,11 +66,13 @@ namespace Server.Game
                 _players.Remove(player);
                 player.Room = null;
 
+                // Send MyPlayer
                 {
                     S_LeaveGame leavePcket = new S_LeaveGame();
                     player.Session.Send(leavePcket);
                 }
 
+                // Send Other Players
                 {
                     S_Despawn despawnPacket = new S_Despawn();
                     despawnPacket.PlayerId.Add(player.Info.PlayerId);

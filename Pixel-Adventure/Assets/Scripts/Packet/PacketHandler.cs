@@ -28,6 +28,7 @@ class PacketHandler
 
 		foreach (PlayerInfo players in spawnPacket.Players)
 			Managers.Object.Add(players, myPlayer: false);
+			Debug.Log(spawnPacket.Players);	
 
 		Debug.Log("S_SpawnHandler");
 	}
@@ -45,14 +46,18 @@ class PacketHandler
 		S_Move movePacket = packet as S_Move;
 		ServerSession serverSession = session as ServerSession;
 
+		// 이동 중인 Player 추출
 		GameObject go = Managers.Object.FindById(movePacket.PlayerId);
 		if (go == null)
 			return;
 
-		PlayerController pc = go.GetComponent<PlayerController>();
-		if (pc == null)
+		// PlayerController
+		Controller c = go.GetComponent<Controller>();
+		if (c == null)
 			return;
 
-		pc.PosInfo = movePacket.PosInfo;
+		c.PosInfo = movePacket.PosInfo;
+
+		Debug.Log(c.PosInfo.PosX);
 	}
 }

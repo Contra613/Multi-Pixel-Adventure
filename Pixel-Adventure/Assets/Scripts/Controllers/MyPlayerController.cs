@@ -6,7 +6,11 @@ using static Define;
 
 public class MyPlayerController : PlayerController
 {
-    
+    [SerializeField]
+    protected int _cameraFocus = -10;
+
+
+    // 1. State, Dir, CellPos
     protected override void Init()
     {
         base.Init();
@@ -16,8 +20,22 @@ public class MyPlayerController : PlayerController
     {
         base.UpdateController();
 
+        switch (State)
+        {
+            case PlayerState.Idle:
+                GetDirInput();
+                break;
+            case PlayerState.Jumping:
+                GetDirInput();
+                break;
+            case PlayerState.Moving:
+                GetDirInput();
+                break;
+        }
+
+
         if (Input.GetKey(KeyCode.Escape))
-            _state = PlayerState.Die;
+            State = PlayerState.Die;
     }
 
     /*void LateUpdate()
@@ -27,82 +45,59 @@ public class MyPlayerController : PlayerController
 
     protected override void Idle()
     {
-        if (Input.anyKey == true)
-        {
-            State = PlayerState.Moving;
-        }
+        base.Idle();
     }
 
-    private void GetInput()
+    void GetDirInput()
     {
-        if (Input.GetKey(KeyCode.RightArrow))
+        /*if (Input.GetKey(KeyCode.Z))
         {
-            transform.position += Vector3.right * Time.deltaTime * _moveSpeed;
-            Dir = MoveDir.Right;
-        }
-        
+            Dir = MoveDir.Up;
+        }*/
+
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.position += Vector3.left * Time.deltaTime * _moveSpeed;
             Dir = MoveDir.Left;
         }
-
-        if (Input.GetKey(KeyCode.Z) && _jumpCount < 1)
+        else if (Input.GetKey(KeyCode.RightArrow))
         {
-            _isJumping = true;
-
-            _jumpCount++;
-            _rigid.velocity = Vector2.zero;
-            _rigid.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            Dir = MoveDir.Right;
         }
-
-    }
-
-    protected override void Moveing()
-    {
-        /*PlayerState prevState = State;
-        Vector3 prevCellPos = CellPos;*/
-
-        GetInput();
-
-        CellPos = new Vector3(transform.position.x, transform.position.y, 0);
-
-        /*if(State != PlayerState.Moving)
-            _state = PlayerState.Idle;*/
-
-        /*if (prevState != State || CellPos != prevCellPos)
+        else
         {
-            C_Move movePacket = new C_Move();
-            movePacket.PosInfo = PosInfo;
-            Managers.Network.Send(movePacket);
-        }*/
+            Dir = MoveDir.None;
+        }
 
         CheckUpdatedFlag();
     }
 
-    protected override void Jumping()
+    /*protected override void Moving()
     {
-        GetInput();
+        base.Moving();
 
-        if (_rigid.velocity.y <= 0)
-            State = PlayerState.Falling;
-    }
+        CellPos = new Vector3(transform.position.x, transform.position.y, 0);
 
-    protected override void Falling()
-    {
-        GetInput();
+        CheckUpdatedFlag();
+        PlayerState prevState = State;
+        Vector3 prevCellPos = CellPos;
 
-        if (_isGrounded == true && _isJumping == false)
+
+        CellPos = new Vector3(transform.position.x, transform.position.y, 0);
+
+        if (State != PlayerState.Moving)
             State = PlayerState.Idle;
-    }
+
+        if (prevState != State || CellPos != prevCellPos)
+        {
+            C_Move movePacket = new C_Move();
+            movePacket.PosInfo = PosInfo;
+            Managers.Network.Send(movePacket);
+        }
+
+    }*/
 
 
-    protected override void Die()
-    {
-        GameObject player = GameObject.Find("MyPlayer");
-        GameObject.Destroy(player, 1f);
-    }
-
+    // 움직임이 있으면 C_Move Packet을 Server에 전송
     void CheckUpdatedFlag()
     {
         if (_updated)
@@ -113,4 +108,15 @@ public class MyPlayerController : PlayerController
             _updated = false;
         }
     }
+
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.contacts[0].normal.y > 0.7f)
+        {
+            _isGrounded = true;
+            _isJumping = false;
+            _jumpCount = 0;
+        }
+    }
+
 }

@@ -6,24 +6,73 @@ using static Define;
 
 public class PlayerController : Controller
 {
-    [SerializeField]
-    protected int _cameraFocus = -10;
-
-    protected PlayerState _state = PlayerState.Idle;
-
     protected override void Init()
     {
         base.Init();
     }
 
+    protected override void UpdateAnimation()
+    {
+        if (State == PlayerState.Idle)
+        {
+            switch (_lastDir)
+            {
+                case MoveDir.Left:
+                    _animator.Play("IDLE");
+                    _sprite.flipX = true;
+                    break;
+                case MoveDir.Right:
+                    _animator.Play("IDLE");
+                    _sprite.flipX = false;
+                    break;
+            }
+
+        }
+        else if (State == PlayerState.Moving)
+        {
+            if (_isJumping == false)
+            {
+                switch (Dir)
+                {
+                    case MoveDir.Left:
+                        _animator.Play("RUN");
+                        _sprite.flipX = true;
+                        break;
+
+                    case MoveDir.Right:
+                        _animator.Play("RUN");
+                        _sprite.flipX = false;
+                        break;
+                }
+            }
+        }
+        else if (State == PlayerState.Jumping)
+        {
+            if (_isJumping == true)
+            {
+                switch (Dir)
+                {
+                    case MoveDir.Left:
+                        _animator.Play("JUMP");
+                        _sprite.flipX = true;
+                        break;
+
+                    case MoveDir.Right:
+                        _animator.Play("JUMP");
+                        _sprite.flipX = false;
+                        break;
+                }
+            }
+        }
+        else if (State == PlayerState.Die)
+        {
+            _animator.Play("DIE");
+        }
+    }
+
     protected override void UpdateController()
     {
         base.UpdateController();
-    }
-
-    protected override void UpdateAnimation()
-    {
-        base.UpdateAnimation();
     }
 
     protected override void Idle()
@@ -35,7 +84,8 @@ public class PlayerController : Controller
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.contacts[0].normal.y >0.7f)
         {

@@ -37,11 +37,10 @@ namespace Google.Protobuf.Protocol {
             "ASgOMhEuUHJvdG9jb2wuTW92ZURpchIMCgRwb3NYGAMgASgCEgwKBHBvc1kY",
             "BCABKAIqXwoFTXNnSWQSEAoMU19FTlRFUl9HQU1FEAASEAoMU19MRUFWRV9H",
             "QU1FEAESCwoHU19TUEFXThACEg0KCVNfREVTUEFXThADEgoKBkNfTU9WRRAE",
-            "EgoKBlNfTU9WRRAFKkYKC1BsYXllclN0YXRlEggKBElETEUQABIKCgZNT1ZJ",
-            "TkcQARILCgdKVU1QSU5HEAISCwoHRkFMTElORxADEgcKA0RpZRAEKjoKB01v",
-            "dmVEaXISCAoETk9ORRAAEgYKAlVQEAESCAoERE9XThACEggKBExFRlQQAxIJ",
-            "CgVSSUdIVBAEQhuqAhhHb29nbGUuUHJvdG9idWYuUHJvdG9jb2xiBnByb3Rv",
-            "Mw=="));
+            "EgoKBlNfTU9WRRAFKjkKC1BsYXllclN0YXRlEggKBElETEUQABIKCgZNT1ZJ",
+            "TkcQARILCgdKVU1QSU5HEAISBwoDRGllEAMqMAoHTW92ZURpchIICgROT05F",
+            "EAASBgoCVVAQARIICgRMRUZUEAISCQoFUklHSFQQA0IbqgIYR29vZ2xlLlBy",
+            "b3RvYnVmLlByb3RvY29sYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerState), typeof(global::Google.Protobuf.Protocol.MoveDir), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -72,16 +71,14 @@ namespace Google.Protobuf.Protocol {
     [pbr::OriginalName("IDLE")] Idle = 0,
     [pbr::OriginalName("MOVING")] Moving = 1,
     [pbr::OriginalName("JUMPING")] Jumping = 2,
-    [pbr::OriginalName("FALLING")] Falling = 3,
-    [pbr::OriginalName("Die")] Die = 4,
+    [pbr::OriginalName("Die")] Die = 3,
   }
 
   public enum MoveDir {
     [pbr::OriginalName("NONE")] None = 0,
     [pbr::OriginalName("UP")] Up = 1,
-    [pbr::OriginalName("DOWN")] Down = 2,
-    [pbr::OriginalName("LEFT")] Left = 3,
-    [pbr::OriginalName("RIGHT")] Right = 4,
+    [pbr::OriginalName("LEFT")] Left = 2,
+    [pbr::OriginalName("RIGHT")] Right = 3,
   }
 
   #endregion

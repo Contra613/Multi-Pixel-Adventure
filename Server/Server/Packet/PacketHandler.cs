@@ -29,6 +29,7 @@ class PacketHandler
 		resMovePacket.PlayerId = clientSession.MyPlayer.Info.PlayerId;
 		resMovePacket.PosInfo = movePacket.PosInfo;
 
+		// 방 안의 모든 Player에게 Packet 전송
 		clientSession.MyPlayer.Room.Broadcast(resMovePacket);
 	}
 }

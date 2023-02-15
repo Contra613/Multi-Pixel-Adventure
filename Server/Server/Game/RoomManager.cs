@@ -41,6 +41,7 @@ namespace Server.Game
                 GameRoom room = null;
                 if (_rooms.TryGetValue(roomId, out room))
                     return room;
+
                 return null;
             }
         }

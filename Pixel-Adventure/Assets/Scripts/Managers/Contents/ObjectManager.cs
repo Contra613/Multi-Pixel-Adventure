@@ -9,6 +9,7 @@ public class ObjectManager
 	public MyPlayerController MyPlayer { get; set; }
 	Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
 
+	// Player Spawn
 	public void Add(PlayerInfo info, bool myPlayer = false)
 	{
 		if (myPlayer)
