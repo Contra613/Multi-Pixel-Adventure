@@ -15,15 +15,14 @@ enum MsgId {
 enum PlayerState {
   IDLE = 0;
   MOVING = 1;
-  JUMPING = 2;
-  Die = 3;
 }
 
 enum MoveDir {
   NONE = 0;
   UP = 1;
-  LEFT = 2;
-  RIGHT = 3;
+  DOWN = 2;
+  LEFT = 3;
+  RIGHT = 4;
 }
 
 message S_EnterGame {
@@ -59,6 +58,6 @@ message PlayerInfo {
 message PositionInfo {
   PlayerState state = 1;
   MoveDir moveDir = 2;
-  float posX = 3;
-  float posY = 4;
+  int32 posX = 3;
+  int32 posY = 4;
 }

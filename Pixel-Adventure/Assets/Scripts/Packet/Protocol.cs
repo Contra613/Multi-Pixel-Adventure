@@ -34,13 +34,13 @@ namespace Google.Protobuf.Protocol {
             "YXllcklkGAEgASgFEgwKBG5hbWUYAiABKAkSJwoHcG9zSW5mbxgDIAEoCzIW",
             "LlByb3RvY29sLlBvc2l0aW9uSW5mbyJ0CgxQb3NpdGlvbkluZm8SJAoFc3Rh",
             "dGUYASABKA4yFS5Qcm90b2NvbC5QbGF5ZXJTdGF0ZRIiCgdtb3ZlRGlyGAIg",
-            "ASgOMhEuUHJvdG9jb2wuTW92ZURpchIMCgRwb3NYGAMgASgCEgwKBHBvc1kY",
-            "BCABKAIqXwoFTXNnSWQSEAoMU19FTlRFUl9HQU1FEAASEAoMU19MRUFWRV9H",
+            "ASgOMhEuUHJvdG9jb2wuTW92ZURpchIMCgRwb3NYGAMgASgFEgwKBHBvc1kY",
+            "BCABKAUqXwoFTXNnSWQSEAoMU19FTlRFUl9HQU1FEAASEAoMU19MRUFWRV9H",
             "QU1FEAESCwoHU19TUEFXThACEg0KCVNfREVTUEFXThADEgoKBkNfTU9WRRAE",
-            "EgoKBlNfTU9WRRAFKjkKC1BsYXllclN0YXRlEggKBElETEUQABIKCgZNT1ZJ",
-            "TkcQARILCgdKVU1QSU5HEAISBwoDRGllEAMqMAoHTW92ZURpchIICgROT05F",
-            "EAASBgoCVVAQARIICgRMRUZUEAISCQoFUklHSFQQA0IbqgIYR29vZ2xlLlBy",
-            "b3RvYnVmLlByb3RvY29sYgZwcm90bzM="));
+            "EgoKBlNfTU9WRRAFKiMKC1BsYXllclN0YXRlEggKBElETEUQABIKCgZNT1ZJ",
+            "TkcQASo6CgdNb3ZlRGlyEggKBE5PTkUQABIGCgJVUBABEggKBERPV04QAhII",
+            "CgRMRUZUEAMSCQoFUklHSFQQBEIbqgIYR29vZ2xlLlByb3RvYnVmLlByb3Rv",
+            "Y29sYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.PlayerState), typeof(global::Google.Protobuf.Protocol.MoveDir), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -70,15 +70,14 @@ namespace Google.Protobuf.Protocol {
   public enum PlayerState {
     [pbr::OriginalName("IDLE")] Idle = 0,
     [pbr::OriginalName("MOVING")] Moving = 1,
-    [pbr::OriginalName("JUMPING")] Jumping = 2,
-    [pbr::OriginalName("Die")] Die = 3,
   }
 
   public enum MoveDir {
     [pbr::OriginalName("NONE")] None = 0,
     [pbr::OriginalName("UP")] Up = 1,
-    [pbr::OriginalName("LEFT")] Left = 2,
-    [pbr::OriginalName("RIGHT")] Right = 3,
+    [pbr::OriginalName("DOWN")] Down = 2,
+    [pbr::OriginalName("LEFT")] Left = 3,
+    [pbr::OriginalName("RIGHT")] Right = 4,
   }
 
   #endregion
@@ -1113,9 +1112,9 @@ namespace Google.Protobuf.Protocol {
 
     /// <summary>Field number for the "posX" field.</summary>
     public const int PosXFieldNumber = 3;
-    private float posX_;
+    private int posX_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public float PosX {
+    public int PosX {
       get { return posX_; }
       set {
         posX_ = value;
@@ -1124,9 +1123,9 @@ namespace Google.Protobuf.Protocol {
 
     /// <summary>Field number for the "posY" field.</summary>
     public const int PosYFieldNumber = 4;
-    private float posY_;
+    private int posY_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public float PosY {
+    public int PosY {
       get { return posY_; }
       set {
         posY_ = value;
@@ -1148,8 +1147,8 @@ namespace Google.Protobuf.Protocol {
       }
       if (State != other.State) return false;
       if (MoveDir != other.MoveDir) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(PosX, other.PosX)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(PosY, other.PosY)) return false;
+      if (PosX != other.PosX) return false;
+      if (PosY != other.PosY) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1158,8 +1157,8 @@ namespace Google.Protobuf.Protocol {
       int hash = 1;
       if (State != global::Google.Protobuf.Protocol.PlayerState.Idle) hash ^= State.GetHashCode();
       if (MoveDir != global::Google.Protobuf.Protocol.MoveDir.None) hash ^= MoveDir.GetHashCode();
-      if (PosX != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(PosX);
-      if (PosY != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(PosY);
+      if (PosX != 0) hash ^= PosX.GetHashCode();
+      if (PosY != 0) hash ^= PosY.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1181,13 +1180,13 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(16);
         output.WriteEnum((int) MoveDir);
       }
-      if (PosX != 0F) {
-        output.WriteRawTag(29);
-        output.WriteFloat(PosX);
+      if (PosX != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(PosX);
       }
-      if (PosY != 0F) {
-        output.WriteRawTag(37);
-        output.WriteFloat(PosY);
+      if (PosY != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(PosY);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1203,11 +1202,11 @@ namespace Google.Protobuf.Protocol {
       if (MoveDir != global::Google.Protobuf.Protocol.MoveDir.None) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) MoveDir);
       }
-      if (PosX != 0F) {
-        size += 1 + 4;
+      if (PosX != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(PosX);
       }
-      if (PosY != 0F) {
-        size += 1 + 4;
+      if (PosY != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(PosY);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1226,10 +1225,10 @@ namespace Google.Protobuf.Protocol {
       if (other.MoveDir != global::Google.Protobuf.Protocol.MoveDir.None) {
         MoveDir = other.MoveDir;
       }
-      if (other.PosX != 0F) {
+      if (other.PosX != 0) {
         PosX = other.PosX;
       }
-      if (other.PosY != 0F) {
+      if (other.PosY != 0) {
         PosY = other.PosY;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -1251,12 +1250,12 @@ namespace Google.Protobuf.Protocol {
             MoveDir = (global::Google.Protobuf.Protocol.MoveDir) input.ReadEnum();
             break;
           }
-          case 29: {
-            PosX = input.ReadFloat();
+          case 24: {
+            PosX = input.ReadInt32();
             break;
           }
-          case 37: {
-            PosY = input.ReadFloat();
+          case 32: {
+            PosY = input.ReadInt32();
             break;
           }
         }

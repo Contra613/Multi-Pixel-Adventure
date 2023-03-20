@@ -6,117 +6,113 @@ using static Define;
 
 public class MyPlayerController : PlayerController
 {
-    [SerializeField]
-    protected int _cameraFocus = -10;
+	protected override void Init()
+	{
+		base.Init();
+	}
 
+	protected override void UpdateController()
+	{
+		switch (State)
+		{
+			case PlayerState.Idle:
+				GetDirInput();
+				break;
+			case PlayerState.Moving:
+				GetDirInput();
+				break;
+		}
 
-    // 1. State, Dir, CellPos
-    protected override void Init()
-    {
-        base.Init();
-    }
+		base.UpdateController();
+	}
 
-    protected override void UpdateController()
-    {
-        base.UpdateController();
+	protected override void UpdateIdle()
+	{
+		// 이동 상태로 갈지 확인
+		if (Dir != MoveDir.None)
+		{
+			State = PlayerState.Moving;
+			return;
+		}
+	}
 
-        switch (State)
-        {
-            case PlayerState.Idle:
-                GetDirInput();
-                break;
-            case PlayerState.Jumping:
-                GetDirInput();
-                break;
-            case PlayerState.Moving:
-                GetDirInput();
-                break;
-        }
+	void LateUpdate()
+	{
+		Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
+	}
 
+	// 키보드 입력
+	void GetDirInput()
+	{
+		if (Input.GetKey(KeyCode.UpArrow))
+		{
+			Dir = MoveDir.Up;
+		}
+		else if (Input.GetKey(KeyCode.DownArrow))
+		{
+			Dir = MoveDir.Down;
+		}
+		else if (Input.GetKey(KeyCode.LeftArrow))
+		{
+			Dir = MoveDir.Left;
+		}
+		else if (Input.GetKey(KeyCode.RightArrow))
+		{
+			Dir = MoveDir.Right;
+		}
+		else
+		{
+			Dir = MoveDir.None;
+		}
+	}
 
-        if (Input.GetKey(KeyCode.Escape))
-            State = PlayerState.Die;
-    }
+	protected override void MoveToNextPos()
+	{
+		if (Dir == MoveDir.None)
+		{
+			State = PlayerState.Idle;
+			CheckUpdatedFlag();
+			return;
+		}
 
-    /*void LateUpdate()
-    {
-        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y + 2, _cameraFocus);
-    }*/
+		Vector3Int destPos = CellPos;
 
-    protected override void Idle()
-    {
-        base.Idle();
-    }
+		switch (Dir)
+		{
+			case MoveDir.Up:
+				destPos += Vector3Int.up;
+				break;
+			case MoveDir.Down:
+				destPos += Vector3Int.down;
+				break;
+			case MoveDir.Left:
+				destPos += Vector3Int.left;
+				break;
+			case MoveDir.Right:
+				destPos += Vector3Int.right;
+				break;
+		}
 
-    void GetDirInput()
-    {
-        /*if (Input.GetKey(KeyCode.Z))
-        {
-            Dir = MoveDir.Up;
-        }*/
+		if (Managers.Map.CanGo(destPos))
+		{
+			if (Managers.Object.Find(destPos) == null)
+			{
+				CellPos = destPos;
+			}
+		}
 
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            Dir = MoveDir.Left;
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            Dir = MoveDir.Right;
-        }
-        else
-        {
-            Dir = MoveDir.None;
-        }
+		CheckUpdatedFlag();
+	}
 
-        CheckUpdatedFlag();
-    }
-
-    /*protected override void Moving()
-    {
-        base.Moving();
-
-        CellPos = new Vector3(transform.position.x, transform.position.y, 0);
-
-        CheckUpdatedFlag();
-        PlayerState prevState = State;
-        Vector3 prevCellPos = CellPos;
-
-
-        CellPos = new Vector3(transform.position.x, transform.position.y, 0);
-
-        if (State != PlayerState.Moving)
-            State = PlayerState.Idle;
-
-        if (prevState != State || CellPos != prevCellPos)
-        {
-            C_Move movePacket = new C_Move();
-            movePacket.PosInfo = PosInfo;
-            Managers.Network.Send(movePacket);
-        }
-
-    }*/
-
-
-    // 움직임이 있으면 C_Move Packet을 Server에 전송
-    void CheckUpdatedFlag()
-    {
-        if (_updated)
-        {
-            C_Move movePacket = new C_Move();
-            movePacket.PosInfo = PosInfo;
-            Managers.Network.Send(movePacket);
-            _updated = false;
-        }
-    }
-
-    protected override void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.contacts[0].normal.y > 0.7f)
-        {
-            _isGrounded = true;
-            _isJumping = false;
-            _jumpCount = 0;
-        }
-    }
-
+	void CheckUpdatedFlag()
+	{
+		if (_updated)
+		{
+			C_Move movePacket = new C_Move();
+			movePacket.PosInfo = PosInfo;
+			Managers.Network.Send(movePacket);
+			_updated = false;
+		}
+	}
 }
+

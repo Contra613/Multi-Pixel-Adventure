@@ -10,7 +10,14 @@ public class GameScene : BaseScene
 
         SceneType = Define.Scene.Game;
 
-        Screen.SetResolution(1280, 720, false);     // 화면 비율
+        Managers.Map.LoadMap(1);
+
+        Screen.SetResolution(640, 480, false);
+
+        //GameObject player = Managers.Resource.Instantiate("Creature/Player");
+        //player.name = "Player";
+        //Managers.Object.Add(player);
+        
 
         //Managers.UI.ShowSceneUI<UI_Inven>();
         //Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
@@ -23,7 +30,6 @@ public class GameScene : BaseScene
         //GameObject go = new GameObject { name = "SpawningPool" };
         //SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
         //pool.SetKeepMonsterCount(2);
-
     }
 
     public override void Clear()

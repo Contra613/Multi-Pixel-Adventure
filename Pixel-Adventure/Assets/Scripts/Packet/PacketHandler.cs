@@ -11,53 +11,47 @@ class PacketHandler
 	{
 		S_EnterGame enterGamePacket = packet as S_EnterGame;
 		Managers.Object.Add(enterGamePacket.Player, myPlayer: true);
-
-		Debug.Log("S_EnterGameHandler");
 	}
+
 	public static void S_LeaveGameHandler(PacketSession session, IMessage packet)
 	{
-		S_LeaveGame leaveGamePacket = packet as S_LeaveGame;
+		S_LeaveGame leaveGameHandler = packet as S_LeaveGame;
 		Managers.Object.RemoveMyPlayer();
-
-		Debug.Log("S_LeaveGameHandler");
 	}
 
 	public static void S_SpawnHandler(PacketSession session, IMessage packet)
 	{
 		S_Spawn spawnPacket = packet as S_Spawn;
-
-		foreach (PlayerInfo players in spawnPacket.Players)
-			Managers.Object.Add(players, myPlayer: false);
-			Debug.Log(spawnPacket.Players);	
-
-		Debug.Log("S_SpawnHandler");
+		foreach (PlayerInfo player in spawnPacket.Players)
+		{
+			Managers.Object.Add(player, myPlayer: false);
+		}
 	}
+
 	public static void S_DespawnHandler(PacketSession session, IMessage packet)
 	{
 		S_Despawn despawnPacket = packet as S_Despawn;
-
 		foreach (int id in despawnPacket.PlayerId)
+		{
 			Managers.Object.Remove(id);
-
-		Debug.Log("S_DespawnHandler");
+		}
 	}
+
 	public static void S_MoveHandler(PacketSession session, IMessage packet)
 	{
 		S_Move movePacket = packet as S_Move;
 		ServerSession serverSession = session as ServerSession;
 
-		// 이동 중인 Player 추출
 		GameObject go = Managers.Object.FindById(movePacket.PlayerId);
 		if (go == null)
 			return;
 
-		// PlayerController
-		Controller c = go.GetComponent<Controller>();
-		if (c == null)
+		Controller cc = go.GetComponent<Controller>();
+		if (cc == null)
 			return;
 
-		c.PosInfo = movePacket.PosInfo;
-
-		Debug.Log(c.PosInfo.PosX);
+		cc.PosInfo = movePacket.PosInfo;
 	}
 }
+
+

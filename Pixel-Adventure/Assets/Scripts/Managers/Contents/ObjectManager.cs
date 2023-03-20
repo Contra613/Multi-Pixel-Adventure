@@ -1,4 +1,4 @@
-using Google.Protobuf.Protocol;
+﻿using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,8 +8,7 @@ public class ObjectManager
 {
 	public MyPlayerController MyPlayer { get; set; }
 	Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
-
-	// Player Spawn
+	
 	public void Add(PlayerInfo info, bool myPlayer = false)
 	{
 		if (myPlayer)
@@ -19,7 +18,7 @@ public class ObjectManager
 			_objects.Add(info.PlayerId, go);
 
 			MyPlayer = go.GetComponent<MyPlayerController>();
-			MyPlayer.ID = info.PlayerId;
+			MyPlayer.Id = info.PlayerId;
 			MyPlayer.PosInfo = info.PosInfo;
 		}
 		else
@@ -29,14 +28,9 @@ public class ObjectManager
 			_objects.Add(info.PlayerId, go);
 
 			PlayerController pc = go.GetComponent<PlayerController>();
-			pc.ID = info.PlayerId;
+			pc.Id = info.PlayerId;
 			pc.PosInfo = info.PosInfo;
 		}
-	}
-
-	public void Add(int id, GameObject go)
-	{
-		_objects.Add(id, go);
 	}
 
 	public void Remove(int id)
@@ -54,7 +48,7 @@ public class ObjectManager
 		if (MyPlayer == null)
 			return;
 
-		Remove(MyPlayer.ID);
+		Remove(MyPlayer.Id);
 		MyPlayer = null;
 	}
 
@@ -69,11 +63,12 @@ public class ObjectManager
 	{
 		foreach (GameObject obj in _objects.Values)
 		{
-			Controller controller = obj.GetComponent<Controller>();
-			if (controller == null)
+			Controller cc = obj.GetComponent<Controller>();
+			if (cc == null)
 				continue;
-			
-			return obj;
+
+			if (cc.CellPos == cellPos)
+				return obj;
 		}
 
 		return null;
