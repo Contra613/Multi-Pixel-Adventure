@@ -31,7 +31,7 @@ class PacketHandler
 	public static void S_DespawnHandler(PacketSession session, IMessage packet)
 	{
 		S_Despawn despawnPacket = packet as S_Despawn;
-		foreach (int id in despawnPacket.PlayerId)
+		foreach (int id in despawnPacket.PlayerIds)
 		{
 			Managers.Object.Remove(id);
 		}
@@ -46,7 +46,7 @@ class PacketHandler
 		if (go == null)
 			return;
 
-		Controller cc = go.GetComponent<Controller>();
+		CreatureController cc = go.GetComponent<CreatureController>();
 		if (cc == null)
 			return;
 

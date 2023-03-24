@@ -13,7 +13,7 @@ public class ObjectManager
 	{
 		if (myPlayer)
 		{
-			GameObject go = Managers.Resource.Instantiate("Players/MyPlayer");
+			GameObject go = Managers.Resource.Instantiate("Creature/MyPlayer");
 			go.name = info.Name;
 			_objects.Add(info.PlayerId, go);
 
@@ -23,7 +23,7 @@ public class ObjectManager
 		}
 		else
 		{
-			GameObject go = Managers.Resource.Instantiate("Players/Player");
+			GameObject go = Managers.Resource.Instantiate("Creature/Player");
 			go.name = info.Name;
 			_objects.Add(info.PlayerId, go);
 
@@ -63,7 +63,7 @@ public class ObjectManager
 	{
 		foreach (GameObject obj in _objects.Values)
 		{
-			Controller cc = obj.GetComponent<Controller>();
+			CreatureController cc = obj.GetComponent<CreatureController>();
 			if (cc == null)
 				continue;
 

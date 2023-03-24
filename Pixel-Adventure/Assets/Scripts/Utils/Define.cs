@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class Define
 {
-    /*public enum PlayerState
-    {
-        Idle,
-        Moving,
-        Die
-    }*/
     public enum Scene
     {
         Unknown,

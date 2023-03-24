@@ -1,4 +1,4 @@
-using Google.Protobuf.Protocol;
+ï»¿using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,10 +15,10 @@ public class MyPlayerController : PlayerController
 	{
 		switch (State)
 		{
-			case PlayerState.Idle:
+			case CreatureState.Idle:
 				GetDirInput();
 				break;
-			case PlayerState.Moving:
+			case CreatureState.Moving:
 				GetDirInput();
 				break;
 		}
@@ -28,11 +28,19 @@ public class MyPlayerController : PlayerController
 
 	protected override void UpdateIdle()
 	{
-		// ÀÌµ¿ »óÅÂ·Î °¥Áö È®ÀÎ
+		// ì´ë™ ìƒíƒœë¡œ ê°ˆì§€ í™•ì¸
 		if (Dir != MoveDir.None)
 		{
-			State = PlayerState.Moving;
+			State = CreatureState.Moving;
 			return;
+		}
+
+		// ìŠ¤í‚¬ ìƒíƒœë¡œ ê°ˆì§€ í™•ì¸
+		if (Input.GetKey(KeyCode.Space))
+		{
+			State = CreatureState.Skill;
+			//_coSkill = StartCoroutine("CoStartPunch");
+			_coSkill = StartCoroutine("CoStartShootArrow");
 		}
 	}
 
@@ -41,22 +49,22 @@ public class MyPlayerController : PlayerController
 		Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
 	}
 
-	// Å°º¸µå ÀÔ·Â
+	// í‚¤ë³´ë“œ ì…ë ¥
 	void GetDirInput()
 	{
-		if (Input.GetKey(KeyCode.UpArrow))
+		if (Input.GetKey(KeyCode.W))
 		{
 			Dir = MoveDir.Up;
 		}
-		else if (Input.GetKey(KeyCode.DownArrow))
+		else if (Input.GetKey(KeyCode.S))
 		{
 			Dir = MoveDir.Down;
 		}
-		else if (Input.GetKey(KeyCode.LeftArrow))
+		else if (Input.GetKey(KeyCode.A))
 		{
 			Dir = MoveDir.Left;
 		}
-		else if (Input.GetKey(KeyCode.RightArrow))
+		else if (Input.GetKey(KeyCode.D))
 		{
 			Dir = MoveDir.Right;
 		}
@@ -70,7 +78,7 @@ public class MyPlayerController : PlayerController
 	{
 		if (Dir == MoveDir.None)
 		{
-			State = PlayerState.Idle;
+			State = CreatureState.Idle;
 			CheckUpdatedFlag();
 			return;
 		}
@@ -115,4 +123,3 @@ public class MyPlayerController : PlayerController
 		}
 	}
 }
-

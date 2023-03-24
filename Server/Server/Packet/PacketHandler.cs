@@ -13,12 +13,14 @@ class PacketHandler
 		C_Move movePacket = packet as C_Move;
 		ClientSession clientSession = session as ClientSession;
 
-        Console.WriteLine($"Move ({movePacket.PosInfo.PosX}, {movePacket.PosInfo.PosY})");
+		Console.WriteLine($"C_Move ({movePacket.PosInfo.PosX}, {movePacket.PosInfo.PosY})");
 
 		if (clientSession.MyPlayer == null)
 			return;
 		if (clientSession.MyPlayer.Room == null)
 			return;
+
+		// TODO : 검증
 
 		// 일단 서버에서 좌표 이동
 		PlayerInfo info = clientSession.MyPlayer.Info;
@@ -29,7 +31,6 @@ class PacketHandler
 		resMovePacket.PlayerId = clientSession.MyPlayer.Info.PlayerId;
 		resMovePacket.PosInfo = movePacket.PosInfo;
 
-		// 방 안의 모든 Player에게 Packet 전송
 		clientSession.MyPlayer.Room.Broadcast(resMovePacket);
 	}
 }
